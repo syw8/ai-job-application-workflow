@@ -1,0 +1,111 @@
+{
+  "fictional": true,
+  "candidate": {
+    "name": "Avery Rowan",
+    "headline": "Early-career evidence analyst",
+    "targeted_summary": "Analyst with experience cleaning public-service datasets, documenting reproducible checks, and turning research findings into concise notes for mixed technical audiences.",
+    "education": [
+      {
+        "credential": "MSc in Applied Social Research",
+        "institution": "Northbridge University",
+        "period": "2028–2030",
+        "details": "Coursework included program evaluation, research design, and applied statistics."
+      }
+    ],
+    "experience": [
+      {
+        "title": "Research Support Assistant",
+        "organization": "Larkspur Policy Cooperative",
+        "period": "2029–2030",
+        "bullets": [
+          "Cleaned and documented survey extracts used in two internal evidence reviews.",
+          "Prepared concise research summaries and reproducible data-quality checklists for project teams."
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "name": "Community Services Evaluation",
+        "bullets": [
+          "Combined three administrative datasets and documented missing-value decisions.",
+          "Presented descriptive findings in a short briefing for non-technical reviewers."
+        ]
+      }
+    ],
+    "skills": ["Data cleaning and validation", "Descriptive analysis", "Research synthesis", "Technical writing"],
+    "languages": ["English — fluent", "Meralian — conversational"]
+  },
+  "job": {
+    "organization": "Cedar & Finch Labs",
+    "role": "Junior Evidence Analyst",
+    "location": "Larkspur City",
+    "requisition_id": "CFL-2030-17",
+    "contact": "Hiring Team",
+    "motivation": "The opportunity to support transparent public-service research is a strong match for the work I want to continue developing.",
+    "focus": "structured data preparation, evidence review, and clear communication",
+    "requirements": ["Prepare and document structured datasets", "Summarize research for project teams"]
+  },
+  "guidance": {
+    "accessed_on": "2026-11-11",
+    "sources": [
+      {
+        "publisher": "Bundesagentur für Arbeit",
+        "title": "Das perfekte Anschreiben erstellen",
+        "url": "https://www.arbeitsagentur.de/bildung/bewerbung/anschreiben",
+        "rules_used": ["Research the employer", "Connect strengths to requested qualifications", "Support skills with evidence"]
+      },
+      {
+        "publisher": "Europass",
+        "title": "Create your Europass CV",
+        "url": "https://europass.europa.eu/en/create-europass-cv",
+        "rules_used": ["Tailor the CV to the vacancy", "Highlight relevant examples", "Use clear, simple language"]
+      }
+    ]
+  },
+  "variant": {
+    "id": "APPDOC-CFL-2030-17-V1",
+    "baseline_id": "CV-BASELINE-V1",
+    "created_on": "2030-04-13",
+    "status": "reviewed",
+    "outputs": {
+      "cv": "CV-CFL-2030-17-V1",
+      "cover_letter": "CL-CFL-2030-17-V1"
+    }
+  },
+  "change_review": [
+    {
+      "document": "cv",
+      "section": "profile",
+      "change_type": "presentation",
+      "proposal": "Lead with data validation, reproducibility, and evidence communication.",
+      "rationale": "These are central responsibilities in the fictional vacancy.",
+      "evidence_ids": ["MATCH-001", "MATCH-002"],
+      "decision": "accepted"
+    },
+    {
+      "document": "cover_letter",
+      "section": "evidence paragraphs",
+      "change_type": "presentation",
+      "proposal": "Use the dataset-checking and research-summary examples as the two main fit arguments.",
+      "rationale": "Both examples directly support stated vacancy requirements.",
+      "evidence_ids": ["MATCH-001", "MATCH-002"],
+      "decision": "accepted"
+    }
+  ],
+  "matches": [
+    {
+      "id": "MATCH-001",
+      "requirement": "Prepare and document structured datasets",
+      "context": "a Research Support Assistant",
+      "evidence": "I cleaned survey extracts and created reproducible data-quality checklists for evidence reviews.",
+      "contribution": "prepare traceable datasets and explain the decisions behind them."
+    },
+    {
+      "id": "MATCH-002",
+      "requirement": "Summarize research for project teams",
+      "context": "a project contributor",
+      "evidence": "my evaluation project required me to present descriptive findings to non-technical reviewers.",
+      "contribution": "clear, appropriately scoped evidence summaries."
+    }
+  ]
+}

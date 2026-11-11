@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Cover Letter"
+  short_description: "Research guidance and write a truthful targeted letter"
+  default_prompt: "Use $write-cover-letter to research the current official guidance and write a cover letter for this role from my private candidate facts."

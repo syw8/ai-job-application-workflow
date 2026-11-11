@@ -1,0 +1,61 @@
+# Private configuration and profiles
+config.local.yaml
+*.local.yaml
+.privacy-denylist.local
+private-denylist.txt
+candidate-profile.yaml
+candidate-profile.*.yaml
+!examples/fictional-demo/candidate-profile.example.yaml
+private-data/
+private-assets/
+applications/
+application-data/
+application-records/
+records.json
+records.*.json
+
+# Real application artifacts
+*.xlsx
+*.xls
+*.docx
+*.pdf
+*.tex
+*.odt
+*.pages
+*.eml
+*.msg
+
+# LaTeX and document build products
+*.aux
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.synctex.gz
+
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Python and editor files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+build/
+dist/
+*.egg-info/
+*.zip
+.DS_Store
+.idea/
+.vscode/

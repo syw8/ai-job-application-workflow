@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ai-job-application-workflow/application-record.schema.json",
+  "title": "Application record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "organization",
+    "role",
+    "location",
+    "source_url",
+    "source_observed_on",
+    "application_status",
+    "vacancy_status",
+    "event_date",
+    "possible_duplicate",
+    "evidence",
+    "materials",
+    "review_required",
+    "next_action"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]*-[0-9]{3,}$"},
+    "fictional": {"type": "boolean"},
+    "organization": {"type": "string", "minLength": 1},
+    "role": {"type": "string", "minLength": 1},
+    "requisition_id": {"type": ["string", "null"]},
+    "location": {"type": "string", "minLength": 1},
+    "source_url": {"type": "string", "format": "uri"},
+    "source_observed_on": {"type": "string", "format": "date"},
+    "application_status": {
+      "enum": ["needs_review", "planned", "submitted", "interviewing", "offer", "rejected", "withdrawn", "declined"]
+    },
+    "vacancy_status": {
+      "enum": ["unknown", "observed_open", "observed_closed", "expired", "removed"]
+    },
+    "event_date": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision"],
+          "properties": {
+            "value": {"type": "string", "format": "date"},
+            "precision": {"const": "day"},
+            "original": {"type": ["string", "null"]}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision"],
+          "properties": {
+            "value": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$"},
+            "precision": {"const": "month"},
+            "original": {"type": ["string", "null"]}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision"],
+          "properties": {
+            "value": {"type": "string", "pattern": "^[0-9]{4}$"},
+            "precision": {"const": "year"},
+            "original": {"type": ["string", "null"]}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision", "original"],
+          "properties": {
+            "value": {"type": "string", "pattern": "^[0-9]{4}(?:-(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12][0-9]|3[01]))?)?/[0-9]{4}(?:-(?:0[1-9]|1[0-2])(?:-(?:0[1-9]|[12][0-9]|3[01]))?)?$"},
+            "precision": {"const": "range"},
+            "original": {"type": "string", "minLength": 1}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "precision"],
+          "properties": {
+            "value": {"const": "unknown"},
+            "precision": {"const": "unknown"},
+            "original": {"type": ["string", "null"]}
+          }
+        }
+      ]
+    },
+    "possible_duplicate": {"type": "boolean"},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "observed_on", "summary"],
+        "properties": {
+          "kind": {"enum": ["user_confirmation", "direct_communication", "reviewed_record", "primary_page", "secondary_source", "search_lead"]},
+          "observed_on": {"type": "string", "format": "date"},
+          "url": {"type": ["string", "null"], "format": "uri"},
+          "summary": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "materials": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["document_versions", "available_locally", "confirmed_uploaded", "confirmed_submitted"],
+      "properties": {
+        "document_versions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/documentVersion"}
+        },
+        "available_locally": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "confirmed_uploaded": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "confirmed_submitted": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "review_required": {"type": "boolean"},
+    "next_action": {"type": "string", "minLength": 1},
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "adapter_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "json": {"$ref": "#/$defs/adapterState"},
+        "markdown": {"$ref": "#/$defs/adapterState"},
+        "excel": {"$ref": "#/$defs/adapterState"},
+        "docx_timeline": {"$ref": "#/$defs/adapterState"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "application_status": {"enum": ["submitted", "interviewing", "offer", "rejected", "withdrawn", "declined"]}
+        },
+        "required": ["application_status"]
+      },
+      "then": {
+        "properties": {
+          "review_required": {"const": true},
+          "evidence": {
+            "contains": {"properties": {"kind": {"enum": ["user_confirmation", "direct_communication"]}}, "required": ["kind"]}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "materials": {
+            "properties": {"confirmed_uploaded": {"minItems": 1}},
+            "required": ["confirmed_uploaded"]
+          }
+        },
+        "required": ["materials"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "contains": {"properties": {"kind": {"enum": ["user_confirmation", "direct_communication"]}}, "required": ["kind"]}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "materials": {
+            "properties": {"confirmed_submitted": {"minItems": 1}},
+            "required": ["confirmed_submitted"]
+          }
+        },
+        "required": ["materials"]
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "contains": {"properties": {"kind": {"enum": ["user_confirmation", "direct_communication"]}}, "required": ["kind"]}
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "documentVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "review_state", "created_on", "target_requisition_id", "format"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]*-V[0-9]+$"},
+        "kind": {"enum": ["cv", "cover_letter", "application_form", "other"]},
+        "review_state": {"enum": ["draft", "reviewed"]},
+        "created_on": {"type": "string", "format": "date"},
+        "target_requisition_id": {"type": ["string", "null"]},
+        "format": {"type": "string", "minLength": 1}
+      }
+    },
+    "adapterState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "application_status", "checked_on"],
+      "properties": {
+        "state": {"enum": ["synced", "needs_review", "failed", "disabled"]},
+        "application_status": {
+          "oneOf": [
+            {"type": "null"},
+            {"enum": ["needs_review", "planned", "submitted", "interviewing", "offer", "rejected", "withdrawn", "declined"]}
+          ]
+        },
+        "checked_on": {"type": "string", "format": "date"}
+      }
+    }
+  }
+}

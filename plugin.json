@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-job-application-workflow",
+  "version": "0.4.0",
+  "description": "Codex skills for finding verified jobs, researching current application guidance, writing targeted documents, and maintaining evidence-backed records."
+}

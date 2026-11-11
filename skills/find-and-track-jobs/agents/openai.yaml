@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find and Track Jobs"
+  short_description: "Find verified vacancies and maintain application records"
+  default_prompt: "Use $find-and-track-jobs to search for current roles matching my private criteria, verify official vacancy pages, and update only the records I approve."

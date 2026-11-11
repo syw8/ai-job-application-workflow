@@ -1,0 +1,68 @@
+{
+  "id": "APP-001",
+  "fictional": true,
+  "organization": "Cedar & Finch Labs",
+  "role": "Junior Evidence Analyst",
+  "requisition_id": "CFL-2030-17",
+  "location": "Larkspur City",
+  "source_url": "https://example.com/jobs/junior-evidence-analyst",
+  "source_observed_on": "2030-04-12",
+  "application_status": "planned",
+  "vacancy_status": "observed_open",
+  "event_date": null,
+  "possible_duplicate": false,
+  "evidence": [
+    {
+      "kind": "primary_page",
+      "observed_on": "2030-04-12",
+      "url": "https://example.com/jobs/junior-evidence-analyst",
+      "summary": "Fictional primary listing observed for the demonstration."
+    },
+    {
+      "kind": "user_confirmation",
+      "observed_on": "2030-04-13",
+      "url": null,
+      "summary": "Fictional candidate selected the lead for document preparation but did not report submission."
+    }
+  ],
+  "materials": {
+    "document_versions": [
+      {
+        "id": "CV-CFL-2030-17-V1",
+        "kind": "cv",
+        "review_state": "reviewed",
+        "created_on": "2030-04-13",
+        "target_requisition_id": "CFL-2030-17",
+        "format": "markdown"
+      },
+      {
+        "id": "CL-CFL-2030-17-V1",
+        "kind": "cover_letter",
+        "review_state": "reviewed",
+        "created_on": "2030-04-13",
+        "target_requisition_id": "CFL-2030-17",
+        "format": "markdown"
+      }
+    ],
+    "available_locally": ["CV-CFL-2030-17-V1", "CL-CFL-2030-17-V1"],
+    "confirmed_uploaded": [],
+    "confirmed_submitted": []
+  },
+  "review_required": true,
+  "next_action": "Human review of the fictional cover-letter draft.",
+  "notes": [
+    "The existence of a draft does not change application_status to submitted."
+  ],
+  "adapter_states": {
+    "json": {
+      "state": "synced",
+      "application_status": "planned",
+      "checked_on": "2030-04-13"
+    },
+    "markdown": {
+      "state": "synced",
+      "application_status": "planned",
+      "checked_on": "2030-04-13"
+    }
+  }
+}

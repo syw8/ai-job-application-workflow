@@ -1,0 +1,12 @@
+{
+  "fictional": true,
+  "organization": "Cedar & Finch Labs",
+  "role": "Junior Evidence Analyst",
+  "url": "https://example.com/jobs/junior-evidence-analyst",
+  "observed_on": "2030-04-12",
+  "source_kind": "primary",
+  "location": "Larkspur City",
+  "summary": "Support evidence reviews, prepare structured datasets, and communicate findings to project teams.",
+  "open_status": "observed_open",
+  "review_state": "needs_review"
+}

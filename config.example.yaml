@@ -1,0 +1,108 @@
+version: 2
+private_workspace: "${JOB_WORKFLOW_PRIVATE_ROOT}"
+candidate_profile: "${JOB_WORKFLOW_CANDIDATE_PROFILE}"
+human_review_required: true
+
+research:
+  source_policy: "official_first"
+  require_primary_vacancy: true
+  record_access_date: true
+  preferred_authorities:
+    - "https://www.arbeitsagentur.de/"
+    - "https://europass.europa.eu/"
+
+documents:
+  versioning:
+    id_pattern: "{document}_{organization}_{role}_v{version}"
+    require_decided_change_set: true
+  cover_letter:
+    voice_reference: "${JOB_WORKFLOW_OPTIONAL_LETTER}"
+    output_name_pattern: "cover-letter_{organization}_{role}.{extension}"
+    max_pages: 1
+    paper_size: "A4"
+    package:
+      folder_pattern: "{organization}/{role}"
+      reserved_character_replacement: "-"
+      collision_policy: "versioned"
+  cv:
+    baseline: "${JOB_WORKFLOW_CV}"
+    output_name_pattern: "cv_{organization}_{role}.{extension}"
+    max_pages: 2
+    paper_size: "A4"
+    editable_sections:
+      - profile
+      - experience
+      - education
+      - projects
+      - skills
+      - research_interests
+      - languages
+    protected_fact_types:
+      - identity
+      - contact
+      - organizations
+      - titles
+      - dates
+      - credentials
+      - grades
+      - results
+      - skill_levels
+      - publications
+      - links
+    fact_changes_require_confirmation: true
+
+job_search:
+  roles:
+    - "research assistant"
+    - "junior data analyst"
+  locations:
+    - "Munich"
+    - "remote within Germany"
+  work_modes:
+    - "on-site"
+    - "hybrid"
+    - "remote"
+  languages:
+    - "English"
+    - "German"
+  include_terms: []
+  exclude_terms: []
+  max_listing_age_days: 45
+  official_detail_page_required: true
+
+tracker:
+  record_id_prefix: "APP"
+  default_language: "en"
+  statuses:
+    - needs_review
+    - planned
+    - submitted
+    - interviewing
+    - offer
+    - rejected
+    - withdrawn
+    - declined
+  adapters:
+    json:
+      enabled: true
+      target: "${JOB_WORKFLOW_JSON_STORE}"
+      state: "configured"
+    markdown:
+      enabled: true
+      target: "${JOB_WORKFLOW_NOTES_ROOT}"
+      state: "configured"
+    excel:
+      enabled: false
+      target: "${JOB_WORKFLOW_WORKBOOK}"
+      state: "disabled"
+      detail_sheet: "Applications"
+      table_name: "ApplicationsTable"
+    docx_timeline:
+      enabled: false
+      target: "${JOB_WORKFLOW_TIMELINE}"
+      state: "disabled"
+
+scheduled_search:
+  component: "external"
+  import_format: "job-lead-json"
+  repository_executes_schedule: false

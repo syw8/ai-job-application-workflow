@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ai-job-application-workflow/config.schema.json",
+  "title": "AI job application workflow configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "private_workspace", "candidate_profile", "human_review_required", "research", "documents", "job_search", "tracker", "scheduled_search"],
+  "properties": {
+    "version": {"const": 2},
+    "private_workspace": {"type": "string", "minLength": 1},
+    "candidate_profile": {"type": "string", "minLength": 1},
+    "human_review_required": {"const": true},
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_policy", "require_primary_vacancy", "record_access_date", "preferred_authorities"],
+      "properties": {
+        "source_policy": {"const": "official_first"},
+        "require_primary_vacancy": {"const": true},
+        "record_access_date": {"const": true},
+        "preferred_authorities": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri"}}
+      }
+    },
+    "documents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["versioning", "cover_letter", "cv"],
+      "properties": {
+        "versioning": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id_pattern", "require_decided_change_set"],
+          "properties": {
+            "id_pattern": {
+              "type": "string",
+              "allOf": [
+                {"pattern": "\\{document\\}"},
+                {"pattern": "\\{organization\\}"},
+                {"pattern": "\\{role\\}"},
+                {"pattern": "\\{version\\}"}
+              ]
+            },
+            "require_decided_change_set": {"const": true}
+          }
+        },
+        "cover_letter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["voice_reference", "output_name_pattern", "max_pages", "paper_size", "package"],
+          "properties": {
+            "voice_reference": {"type": "string"},
+            "output_name_pattern": {"type": "string", "pattern": "\\{organization\\}.*\\{role\\}.*\\{extension\\}"},
+            "max_pages": {"type": "integer", "minimum": 1},
+            "paper_size": {"enum": ["A4", "Letter"]},
+            "package": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["folder_pattern", "reserved_character_replacement", "collision_policy"],
+              "properties": {
+                "folder_pattern": {"type": "string", "pattern": "\\{organization\\}.*\\{role\\}"},
+                "reserved_character_replacement": {"type": "string", "minLength": 1, "maxLength": 3},
+                "collision_policy": {"enum": ["ask", "versioned", "fail"]}
+              }
+            }
+          }
+        },
+        "cv": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["baseline", "output_name_pattern", "max_pages", "paper_size", "editable_sections", "protected_fact_types", "fact_changes_require_confirmation"],
+          "properties": {
+            "baseline": {"type": "string", "minLength": 1},
+            "output_name_pattern": {"type": "string", "pattern": "\\{organization\\}.*\\{role\\}.*\\{extension\\}"},
+            "max_pages": {"type": "integer", "minimum": 1},
+            "paper_size": {"enum": ["A4", "Letter"]},
+            "editable_sections": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}, "contains": {"const": "experience"}},
+            "protected_fact_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}, "contains": {"const": "dates"}},
+            "fact_changes_require_confirmation": {"const": true}
+          }
+        }
+      }
+    },
+    "job_search": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roles", "locations", "work_modes", "languages", "include_terms", "exclude_terms", "max_listing_age_days", "official_detail_page_required"],
+      "properties": {
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "locations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "work_modes": {"type": "array", "uniqueItems": true, "items": {"enum": ["on-site", "hybrid", "remote"]}},
+        "languages": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "include_terms": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "exclude_terms": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "max_listing_age_days": {"type": "integer", "minimum": 1},
+        "official_detail_page_required": {"const": true}
+      }
+    },
+    "tracker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id_prefix", "default_language", "statuses", "adapters"],
+      "properties": {
+        "record_id_prefix": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]{1,15}$"},
+        "default_language": {"type": "string", "minLength": 2},
+        "statuses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "adapters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["json", "markdown", "excel", "docx_timeline"],
+          "properties": {
+            "json": {"$ref": "#/$defs/basicAdapter"},
+            "markdown": {"$ref": "#/$defs/basicAdapter"},
+            "excel": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["enabled", "target", "state", "detail_sheet", "table_name"],
+              "properties": {
+                "enabled": {"type": "boolean"},
+                "target": {"type": "string", "minLength": 1},
+                "state": {"enum": ["disabled", "configured", "needs_review"]},
+                "detail_sheet": {"type": "string", "minLength": 1},
+                "table_name": {"type": "string", "minLength": 1}
+              }
+            },
+            "docx_timeline": {"$ref": "#/$defs/basicAdapter"}
+          }
+        }
+      }
+    },
+    "scheduled_search": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component", "import_format", "repository_executes_schedule"],
+      "properties": {
+        "component": {"const": "external"},
+        "import_format": {"const": "job-lead-json"},
+        "repository_executes_schedule": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "basicAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "target", "state"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "target": {"type": "string", "minLength": 1},
+        "state": {"enum": ["disabled", "configured", "needs_review"]}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"enabled": {"const": true}},
+            "required": ["enabled"]
+          },
+          "then": {
+            "properties": {"state": {"enum": ["configured", "needs_review"]}}
+          },
+          "else": {
+            "properties": {"state": {"const": "disabled"}}
+          }
+        }
+      ]
+    }
+  }
+}

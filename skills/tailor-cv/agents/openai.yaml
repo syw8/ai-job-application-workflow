@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tailor CV"
+  short_description: "Research the role and tailor the complete CV"
+  default_prompt: "Use $tailor-cv to research the current official guidance and tailor my private CV for this role without changing my facts."

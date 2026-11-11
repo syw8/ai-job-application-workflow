@@ -1,0 +1,21 @@
+fictional: true
+display_name: "Avery Rowan"
+headline: "Early-career evidence analyst"
+education:
+  - credential: "MSc in Applied Social Research"
+    institution: "Northbridge University"
+    period: "2028–2030"
+experience:
+  - title: "Research Support Assistant"
+    organization: "Larkspur Policy Cooperative"
+    period: "2029–2030"
+supported_skills:
+  - "Data cleaning and validation"
+  - "Descriptive analysis"
+  - "Research synthesis"
+  - "Technical writing"
+fact_policy:
+  - "Do not add credentials, dates, results, tools, languages, or work history that are not present in an approved private source."
+
+# This synthetic profile demonstrates shape only.
+# A real candidate profile must remain outside version control.
